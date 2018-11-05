@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color:black;
+        }
+        #c {
+        }
+    </style>
+</head>
+<body>
+<div style="text-align:center;">
+<h1 style="color: #dcdcdc;
+    font-family: monospace;
+    text-shadow: 0 0 13px #f800ff;display:block;">Pong</h1>
+<canvas id="c" width="400" height="300" style="border-style:solid;border-radius:20px;border-color: #ffffff14;border-width: 6px;box-shadow: 0 0 20px #fc00ff; display:inline-block;"></canvas>
+</div>
+</body>
+<script>
+    var Pd1=150,Pd2=150,BallX=200,BallY=150,Pts=0,Pd1V=0,Pd2V=0,inGame=0,key=null,Cooldown=0;
+    var setDir = function(dir) {vX=Math.sin(randDir*Math.PI/180)*4;vY=Math.cos(randDir*Math.PI/180)*4;}
+    setDir(randDir=Math.random()*360);
+    canvas = document.getElementById("c");
+    window.addEventListener("keydown", function (e) {
+        key = e.key;keycode=e.keyCode;})
+    window.addEventListener("keyup", function (e) {
+        key = null;keycode=null;})
+    ctx = canvas.getContext("2d");
+    ctx.font = "25px monospace";
+    var resetGame = function() {BallX=200,BallY=150,inGame=1;ctx.fillStyle="Black";ctx.fillRect( 0, 0, 400, 300);ctx.fillStyle="White";ctx.fillText("Press any key to start",35,100);ctx.fillText("Score: " + Pts,150,150);Pts=0,Cooldown=0,Pd1=150,Pd2=150;}
+
+    var checkGame = function() {
+        if (inGame == 0) {setDir(randDir=Math.random()*360);resetGame();}
+        if (inGame == 1) {if (key != null){inGame = 2;}}
+        if (inGame == 2) {draw();}
+        if (Cooldown >=1) {Cooldown --;}
+    }
+    var draw = function() { //Main Game loop
+        ctx.fillStyle = "Black";
+        ctx.fillRect( 0, 0, 400, 300);
+        ctx.fillStyle = "White";
+        ctx.fillText(Pts,190,50);
+        ctx.fillRect(10,(Pd1-30),10,60);
+        ctx.fillRect(380,(Pd2-30),10,60);
+        ctx.fillRect(BallX-5,BallY-5,10,10);
+        if (BallX<=0 || BallX>=400){inGame=false;}
+        if (BallY<=Pd1+30 && BallY>=Pd1-30 && BallX<=30 && BallX>=10){vX=Math.abs(vX),vY=vY+0.3;if(Cooldown == 0){Pts+=1;};Cooldown=10;}
+        if (BallY<=0 || BallY>=300){vY=0-vY;}
+        if (BallY<=Pd2+30 && BallY>=Pd2-30 && BallX<=390 && BallX>=370){vX=Math.abs(vX)*-1,vY=vY+0.3;if(Cooldown == 0){Pts+=1;};Cooldown=10;}
+        BallX+=vX,BallY+=vY;
+        if (key==="s" && Pd1<=260){Pd1V+=4;} //Paddle 1 down
+        if (key==="w" && Pd1>=40){Pd1V-=4;} //Paddle 1 up
+        if (keycode==40 && Pd2<=260){Pd2V+=4;} //Paddle 2 down
+        if (keycode==38 && Pd2>=40){Pd2V-=4;} //Paddle 2 up
+        Pd1+=Pd1V; //Change paddle 1 Ypos
+        Pd1V=Pd1V*0.6;
+        Pd2+=Pd2V; //Change paddle 2 Ypos
+        Pd2V=Pd2V*0.6;
+    }//End draw function definition
+    setInterval(checkGame,50);
+</script>
+</html>
