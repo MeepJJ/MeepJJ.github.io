@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+    <style>
+        body {
+            font-family: futura;
+            background-color:#222222;
+        }
+        .head1 {
+            display:inline-block;
+            padding:5px;
+            font-weight: lighter;
+            background-color:#353535;
+            color:white;
+            height:40px;
+            text-align:center;
+            user-select:none;
+        }
+        #Home, #Games {
+            display:inline-block;
+            font-weight: lighter;
+            color:#222222;
+            user-select:none;
+            height:40px;
+            text-align:center;
+            padding:5px;
+        }
+        .games:hover {
+            background-color: white;
+            color: black;
+            transition: linear 0.1s;
+        }
+        .games {transition: linear 0.2s;}
+    </style>
+
+</head>
+
+<body>
+<div>
+    <h2 id="Home" href="url">Home</h2>
+    <h2 class="head1">MeepJJ's Website</h2>
+    <h2 id="Games">Games</h2>
+    <a href="https://meepjj.github.io/pong.html"><h2 class="head1 games">Pong</h2></a>
+
+
+</div>
+<script>
+    var gamesopen = false;
+    var i = 0;
+    changeColor = function() {i=i+3;if(i>=355){i=0;}
+        animateColor("Home",Number(i))
+        animateColor("Games",Number(i))}
+    var animateColor = function(element,color){	document.getElementById(element.toString()).style.backgroundColor = ('hsl('+color+',100%,60%)')}
+    setInterval(changeColor,300);
+</script>
+</body>
+</html>
