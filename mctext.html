@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="http://fontsforweb.com/public/fonts/1412/minecraftfont.ttf" rel="stylesheet">
+    <style>
+        .mcfont {
+            font-family: 'minecraft';
+            font-size: 18px;
+            font-weight:normal;
+            padding:2px;
+            padding-left:5px;
+            padding-right:5px;
+        }
+        #textin {
+            height:140px;
+            width:300px;
+            font-family: 'minecraft';
+            border-color:#959595;
+            border-style:ridge;
+            border-width:5px;
+            display:block;
+            margin:5px;
+        }
+
+        #textin:focus {
+            border-color: #518aec;
+            outline: none;
+            box-shadow: inset 0 0 7px #518aec;
+        }
+        #copytext {
+            margin:5px;
+        }
+        #output {
+            height:140px;
+            width:300px;
+            border-color:#959595;
+            border-style:ridge;
+            border-width:5px;
+            display:inline-block;
+            margin:5px;
+            word-wrap: break-word;
+            cursor: cursor;
+            color:white;
+            background: #232323;
+        }
+        .button {
+            display:inline-block;
+            width:67px;
+            border-color:#959595;
+            border-style:outset;
+            border-width:5px;
+            margin-left:5px;
+            background-color:#e1e1e1;
+            cursor:pointer;
+        }
+        .hover:hover {
+            background-color: #cbcbcb;
+            border-color: #a8a8a8;
+            border-style: inset;
+        }
+        ::selection {
+            color:white;
+            background-color:black;
+        }
+    </style>
+</head>
+
+<body>
+<textarea class="mcfont"id="textin"></textarea>
+<div class="mcfont"id="output">Loading...</div><br>
+<div class="mcfont hover button" onclick="setBkg('#232323')">Black</div>
+<div class="mcfont hover button" onclick="setBkg('#b2e1ff')">Sky</div>
+<div class="mcfont hover button" onclick="setBkg('#559264')">Green</div>
+<div class="mcfont hover button" onclick="setBkg('#ffffff')" style="width:12px;">X</div><br>
+<div class="mcfont hover button" style="width:300px;margin-top:5px;" onclick="copyToClipboard(servertext)">Copy as server text</div>
+<script>
+    var box = document.getElementById('textin');
+    var out = document.getElementById("output");
+    var textout;
+    var end = 'e';
+    var color = 'white', weight = 'normal', italic='normal';
+    function setBkg(setcolor) {
+        document.getElementById('output').style.background = ""+setcolor;}
+
+    function setColor(str) {
+        var rf = false;
+        if (str=='§r'){color = 'white',rf=true;}
+        if (str=='§f'){color = 'white',rf=true;}
+        if (str=='§7'){color = 'lightgrey',rf=true;}
+        if (str=='§8'){color = 'grey',rf=true;}
+        if (str=='§4'){color = '#9B271F',rf=true;} //dark red
+        if (str=='§c'){color = '#EB6762',rf=true;} // light red
+        if (str=='§6'){color = '#F4AB33',rf=true;} //gold
+        if (str=='§e'){color = '#FFF861',rf=true;} //yellow
+        if (str=='§2'){color = 'green',rf=true;}
+        if (str=='§a'){color = 'lime',rf=true;}
+        if (str=='§b'){color = 'aqua',rf=true;}
+        if (str=='§3'){color = 'darkaqua',rf=true;}
+        if (str=='§1'){color = 'darkblue',rf=true;}
+        if (str=='§9'){color = '#466CFC',rf=true;} //purple
+        if (str=='§d'){color = '#E87AFF',rf=true;} //darkpink
+        if (str=='§5'){color = '#983DAA',rf=true;} //pink
+        if (rf==true) {weight = 'normal',italic='normal';}
+        if (str=='§l'){ weight = 'bold';}
+        if (str=='§o'){italic='italic',weight='normal';}
+
+        return "</span><span style=\"color:" + color + ";font-weight:" + weight + ";font-style:" + italic + ";\">"
+    }
+    function Update() {
+        textout = '<span>' + box.value + '</span>';
+        textout = textout.replace(/&/g,'§');
+        textout = textout.replace(/(\r\n|\r|\n)/g,'<br>');
+        textout = textout.replace(/§./g,setColor);
+        servertext = box.value.replace(/§/g,'&');
+        out.innerHTML = textout;
+    }
+    setInterval(Update,400);
+    function copyToClipboard(val){
+        var dummy = document.createElement("input");
+        document.body.appendChild(dummy);
+        dummy.style.display = 'hidden';
+        dummy.setAttribute("id", "dummy_id");
+        document.getElementById("dummy_id").value=val;
+        dummy.select();
+        document.execCommand("copy");
+        document.body.removeChild(dummy);
+    }
+</script>
+</body>
+</html> 
